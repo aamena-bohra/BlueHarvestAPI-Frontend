@@ -1,0 +1,56 @@
+<div class="container">
+  <h1>Customers</h1>
+  <button (click)="createDummyCustomer()" class="btn btn-primary">Create Dummy Customers</button>
+  <br>
+  <br>
+  <div>
+     <h2>Get Customer Details</h2>
+     <input type="text" [(ngModel)]="customerId" placeholder="Customer ID" class="form-control mb-2"> &nbsp;&nbsp;
+     <button (click)="getCustomerDetails()" class="btn btn-primary">Get Customer Details</button>
+  </div>
+  <br>
+  <div *ngIf="customerAvailable">
+     <div class="form-group">
+      <label for="initialDeposit">Initial Deposit:</label>
+      <input type="number" id="initialDeposit" [(ngModel)]="initialDeposit" class="form-control">
+     </div>
+     <button (click)="openCurrentAccount(customerId, initialDeposit)" class="btn btn-success">
+     Create Current Account
+     </button>
+     <br>
+     <hr>
+     <h2>Customer Details</h2>
+     <p><strong>Name:</strong> {{ name }} {{ surname }}</p>
+     <h3>Account Details</h3>
+     <div class="card mt-3" *ngFor="let acct of accounts">
+        <div class="card-body">
+           <h3 class="card-title">Account Number # {{ acct.accountId }} (Type: {{ acct.accType === 0 ? 'Savings' : 'Current' }})</h3>
+           <p><strong>Balance:</strong> {{ acct.balance }}</p>
+           <h3>Transactions:</h3>
+           <div *ngIf="acct.transactions.length > 0">
+              <table class="table table-bordered" style="border: 1px solid black;">
+                 <thead>
+                    <tr>
+                       <th style="border: 1px solid black; padding: 5px;">Amount</th>
+                       <th style="border: 1px solid black; padding: 5px;">Date</th>
+                       <th style="border: 1px solid black; padding: 5px;">Type</th>
+                    </tr>
+                 </thead>
+                 <tbody>
+                    <tr *ngFor="let transaction of acct.transactions">
+                       <td style="border: 1px solid black; padding: 5px;">{{ transaction.amount }}</td>
+                       <td style="border: 1px solid black; padding: 5px;">{{ transaction.date | date: 'dd/MM/yyyy HH:mm' }}</td>
+                       <td style="border: 1px solid black; padding: 5px;">{{ transaction.type === 0 ? 'Deposit' : 'Withdrawal' }}</td>
+                    </tr>
+                 </tbody>
+              </table>
+           </div>
+           <div *ngIf="acct.transactions.length == 0">
+            <span style="color: red;">No Transactions</span>
+           </div>
+        </div>
+        <hr>
+     </div>
+  </div>
+  <br>
+</div>
